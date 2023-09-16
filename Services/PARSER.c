@@ -26,7 +26,7 @@ u8 PARSER_u8RecordParser(u8* record)
     u8 dataSize, recordType, checkSum;
     u32 flashingAddress;
     u32 data[20];
-    static u16 baseAddr = 0;
+    static u16 baseAddr = 0x0801;
 	u8 calculatedCheckSum = 0;
 
 

@@ -33,6 +33,6 @@ void GPIO_voidTogglePin(EN_Port_t port, u8 pinNum);
 void GPIO_voidTogglePort(EN_Port_t port);
 
 u8 GPIO_u8ReadPin(EN_Port_t port, u8 pinNum);
-u16 GPIO_u16ReadPort(EN_Port_t port);
+u16 GPIO_u8ReadPort(EN_Port_t port);
 
 #endif /* GPIO_GPIO_INTERFACE_H_ */

@@ -18,6 +18,6 @@ typedef struct{
 void BT_voidInit(BT_t* bt);
 void BT_voidSendData(BT_t* bt, u8* buffer, u32 len);
 void BT_voidReceiveData(BT_t* bt, u8* buffer, u32 len);
-void BT_voidReceiveDataTimeOut(BT_t* bt, u8* buffer, u32 len);
+void BT_voidReceiveDataTimeout(BT_t* bt, u8* buffer, u32 len);
 
 #endif /* BT_MODULE_BT_H_ */

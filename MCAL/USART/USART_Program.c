@@ -124,8 +124,8 @@ static void USART_voidConfigurePins(st_USART_RegDef_t* USARTn, u8 mode){
 
 	if(USARTn == USART1){
 		USARTConfig.AltFuncMode = GPIO_AF7;
-		GPIO_voidInitPin(PORTB, 6, &USARTConfig);	// TX
-		GPIO_voidInitPin(PORTB, 7, &USARTConfig);	// RX
+		GPIO_voidInitPin(PORTA, 9, &USARTConfig);	// TX
+		GPIO_voidInitPin(PORTA, 10, &USARTConfig);	// RX
 		if(mode == USART_SYNCHRONOUS)
 			GPIO_voidInitPin(PORTA, 8, &USARTConfig); 	// CK
 		if(mode == USART_HARDWARE_FLOW_CONTROL){

@@ -30,7 +30,8 @@ void BT_voidReceiveData(BT_t* bt, u8* buffer, u32 len){
 		USART_voidReceiveData(bt->USARTn, &buffer[i]);
 }
 
-void BT_voidReceiveDataTimeOut(BT_t* bt, u8* buffer, u32 len){
+void BT_voidReceiveDataTimeout(BT_t* bt, u8* buffer, u32 len)
+{
 	for(u32 i=0; i<len; i++)
 		USART_voidReceiveDataTimeOut(bt->USARTn, &buffer[i]);
 }
