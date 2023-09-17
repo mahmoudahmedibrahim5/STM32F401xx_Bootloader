@@ -56,7 +56,7 @@ void FMI_voidMassErase(void)
 	while((FMI->SR>>16)&1);
 }
 
-void FMI_voidFlashWrite(u32* flashAddress, u32* buffer, u32 len)
+void FMI_voidFlashWrite(u32 flashAddress, u32* buffer, u32 len)
 {
 	/* Check that no Flash memory operation is ongoing */
 	while((FMI->SR>>16)&1);
@@ -74,9 +74,14 @@ void FMI_voidFlashWrite(u32* flashAddress, u32* buffer, u32 len)
 	/* Enable Programming */
 	FMI->CR |= (1<<0);
 
-	/* Start the programming */
-	FMI->CR |= (1<<16);
+	u32* writingAddress = (u32 *)flashAddress;
+	for(u32 i = 0; i < len; i++)
+	{
+		*(writingAddress+i) = buffer[i];
+		/* Check that no Flash memory operation is ongoing */
+		while((FMI->SR>>16)&1);
+	}
 
-	/* Check that no Flash memory operation is ongoing */
-	while((FMI->SR>>16)&1);
+	/* Disable Programming */
+	FMI->CR &= ~(1<<0);
 }

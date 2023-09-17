@@ -1,5 +1,5 @@
 import serial
-
+from tkinter import filedialog
 
 def GET_VERSION():
     print("\n************************** GET VERSION ************************** \n")
@@ -7,7 +7,6 @@ def GET_VERSION():
     for i in range(3):
         print(ser.readline().decode(), end="")
     print("")
-    
 
 def GET_HELP():
     print("\n************************** GET HELP ************************** \n")
@@ -18,13 +17,30 @@ def MASS_ERASE():
     ser.write("3".encode())  
     
 def SECTOR_ERASE():
+    sector = 0
+    while ((sector == 0) | (sector > 7)):
+        print("Enter the number of sector to be erased: ")
+        sector = int(input())
+        if sector>7:
+            print("Invalid Sector number")
+    print("Sector %d to be erased" %(sector))
     ser.write("4".encode())
+    ack = ser.readline().decode()
+    ser.write(str(sector).encode())
+    print("Sector %d has been erased\n" %(sector))
 
 def FLASH_WRITE():
+    file_path = filedialog.askopenfilename()
+    f = open(file_path, "r")
+    lines = f.readlines()
+    f.close()
     ser.write("5".encode())
+    ser.write(str(lines[1]).encode())
+    print(lines[1])
     
 def EXIT():
     ser.write("0".encode())
+
 
 if __name__ == "__main__":
     print("Welcome To Bootloader")
@@ -62,5 +78,5 @@ if __name__ == "__main__":
             EXIT()
             break
         else:
-            print("Wrong Command\n")
+            print("Invalid Command Number\n")
     

@@ -9,11 +9,13 @@
 #define BOOTLOADER_H_
 
 #include "../ECUAL/BT_Module/BT_Interface.h"
+#include "../MCAL/FMI/FMI_Interface.h"
+#include "PARSER.h"
 #include <string.h>
 
 #define SERIAL_DEBUG	0
 
-void SerialTest(void);
+void HelloBootloader(void);
 void BL_getCommand(void);
 
 void BL_cmdGetVersion(void);

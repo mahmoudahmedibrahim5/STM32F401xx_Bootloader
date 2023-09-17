@@ -7,27 +7,13 @@
 
 #include "Bootloader.h"
 
-#if SERIAL_DEBUG
-BT_t debug = {USART1, 9600};  // PA9, PA10
-#else
 BT_t serial = {USART6, 9600}; // PA11, PA12
-#endif
-char DataBuffer[200];
 
-void SerialTest(void)
+void HelloBootloader(void)
 {
 	char msg[] = "Hello Bootloader\n";
-#if SERIAL_DEBUG
-	BT_voidInit(&debug);
-#else
 	BT_voidInit(&serial);
-#endif
-
-#if SERIAL_DEBUG
-	BT_voidSendData(&debug, (u8 *)msg, strlen(msg));
-#else
 	BT_voidSendData(&serial, (u8 *)msg, strlen(msg));
-#endif
 }
 
 void BL_getCommand(void)
@@ -79,15 +65,25 @@ void BL_cmdGetHelp(void)
 
 void BL_cmdMassErase(void)
 {
-
+	FMI_voidMassErase();
 }
 
 void BL_cmdSectorErase(void)
 {
-
+	u8 sector = 0;
+	char ack[] = "\n";
+	BT_voidSendData(&serial, (u8 *)ack, strlen(ack));
+	sector = 0xFF;
+	while(sector == 0xFF)
+		BT_voidReceiveDataTimeout(&serial, &sector, 1);
+	sector &= ~(1<<7);
+	sector -= '0';
+	FMI_voidSectorErase(sector);
 }
 
 void BL_cmdFlashWrite(void)
 {
-
+	u8 record[44];
+	BT_voidReceiveData(&serial, record, 44);
+	PARSER_u8RecordParser(record);
 }

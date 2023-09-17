@@ -26,6 +26,6 @@ typedef enum{
 
 void FMI_voidSectorErase(EN_FlashSectors_t sector);
 void FMI_voidMassErase(void);
-void FMI_voidFlashWrite(u32* flashAddress, u32* buffer, u32 len);
+void FMI_voidFlashWrite(u32 flashAddress, u32* buffer, u32 len);
 
 #endif /* FMI_FMI_INTERFAVE_H_ */

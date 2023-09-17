@@ -30,12 +30,15 @@ LED_t green = {PORTA, 0};
 void SystemInitialize(void);
 void Blink(void);
 void SerialTest(void);
+void WriteSector(void);
 
 int main(void)
 {
 	SystemInitialize();
 
-	SerialTest();
+	//WriteSector(); // to test sector erase
+
+	HelloBootloader();
 	BL_getCommand();
 	while(1)
 	{
@@ -60,4 +63,11 @@ void Blink(void)
 {
 	LED_voidToggle(&green);
 	TIMERS_voidDelayMilliSec(500);
+}
+
+void WriteSector(void)
+{
+	u32 flashAddress = 0x08010000;
+	u32 data[] = {0x00000000, 0x00000001, 0x00000002, 0x00000003, 0x00000004, 0x00000005, 0x00000006, 0x00000007};
+	FMI_voidFlashWrite(flashAddress, data, 8);
 }
