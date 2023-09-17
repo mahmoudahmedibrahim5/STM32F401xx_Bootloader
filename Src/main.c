@@ -32,14 +32,20 @@ void Blink(void);
 void SerialTest(void);
 void WriteSector(void);
 
+//void (*app)(void);
+
 int main(void)
 {
 	SystemInitialize();
 
+	//app = (void *)0x08010000;
 	//WriteSector(); // to test sector erase
 
 	HelloBootloader();
 	BL_getCommand();
+
+	//app();
+
 	while(1)
 	{
 		Blink();

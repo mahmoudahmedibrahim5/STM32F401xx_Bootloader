@@ -34,9 +34,31 @@ def FLASH_WRITE():
     f = open(file_path, "r")
     lines = f.readlines()
     f.close()
+    
+    numberOfLines = len(lines)
+    lengthOfNumeber = len(str(numberOfLines))
     ser.write("5".encode())
-    ser.write(str(lines[1]).encode())
-    print(lines[1])
+    
+    ack = ser.readline().decode()
+    print("First Ack is Sent")
+    ser.write(str(lengthOfNumeber).encode())
+    
+    ack = ser.readline().decode()
+    print("Second Ack is Sent")
+    ser.write(str(numberOfLines).encode())
+    
+    ack = ser.readline().decode()
+    for i in range(numberOfLines):
+        ser.write(str(len(lines[i])).encode())
+        ack = ser.readline().decode()
+        
+        ser.write(str(lines[i]).encode())
+        ack = ser.readline().decode()
+        if(ack[0] == "1"):
+            print("Line %d has been sent succesfully" %(i))
+        else:
+            print("Line %d hasn't been sent succesfully" %(i))
+    print("")
     
 def EXIT():
     ser.write("0".encode())
