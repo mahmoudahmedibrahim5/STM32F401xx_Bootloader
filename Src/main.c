@@ -20,12 +20,13 @@
 
 #include "../MCAL/RCC/RCC_Interface.h"
 #include "../MCAL/TIMERS/TIMERS_Interface.h"
+#include "../MCAL/NVIC/NVIC_Interface.h"
 
 #include "../ECUAL/LED/LED_Interface.h"
 #include "../Services/Bootloader.h"
 
 
-LED_t green = {PORTA, 0};
+LED_t green = {PORTA, 1};
 
 void SystemInitialize(void);
 void Blink(void);
@@ -34,15 +35,14 @@ void WriteSector(void);
 
 //void (*app)(void);
 
+
 int main(void)
 {
 	SystemInitialize();
 
 	//app = (void *)0x08010000;
-	//WriteSector(); // to test sector erase
 
-	HelloBootloader();
-	BL_getCommand();
+	BL_start();
 
 	//app();
 
@@ -59,8 +59,11 @@ void SystemInitialize(void)
 	RCC_voidPeripheralEnable(GPIOA_EN);
 	RCC_voidPeripheralEnable(GPIOB_EN);
 	RCC_voidPeripheralEnable(TIM2_EN);
+	RCC_voidPeripheralEnable(TIM5_EN);
 	RCC_voidPeripheralEnable(USART1_EN);
 	RCC_voidPeripheralEnable(USART6_EN);
+
+	NVIC_voidEnableIRQ(NVIC_IRQ_TIM5);
 
 	LED_voidInit(&green);
 }

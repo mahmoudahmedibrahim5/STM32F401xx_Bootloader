@@ -8,17 +8,35 @@
 #include "Bootloader.h"
 
 BT_t serial = {USART6, 9600}; // PA11, PA12
+u8 bootloaderOn = 2;
+static void StopBootloader(void);
 
 void HelloBootloader(void)
 {
 	char msg[] = "Hello Bootloader\n";
-	BT_voidInit(&serial);
 	BT_voidSendData(&serial, (u8 *)msg, strlen(msg));
+}
+
+void BL_start(void)
+{
+	BT_voidInit(&serial);
+	TIMERS_voidSetInterrupt(TIM5, &StopBootloader, 4000);
+	u8 ack = 0xFF;
+	while(ack == 0xFF && bootloaderOn)
+		BT_voidReceiveDataTimeout(&serial, &ack, 1);
+	if(bootloaderOn)
+		BL_getCommand();
+}
+
+static void StopBootloader(void)
+{
+	bootloaderOn--;
 }
 
 void BL_getCommand(void)
 {
 	u8 command;
+	HelloBootloader();
 	while(1)
 	{
 		command = 0xFF;

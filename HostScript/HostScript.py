@@ -72,7 +72,11 @@ if __name__ == "__main__":
     ser = serial.Serial(port=com, baudrate=9600)
     print("\nPort Opened Succesufully")
     print("Waiting for the mcu to say Hello\n")
-    print(ser.readline().decode())
+    hello = ""
+    while hello == "":
+        ser.write("1".encode())
+        hello = ser.readline().decode()
+        print(hello)
     
     while True:
         print("********** Bootloader Command List **********\n")
